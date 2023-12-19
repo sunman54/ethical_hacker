@@ -7,5 +7,9 @@ def sniff(interface):
 
 
 def process_sniffed_packet(packet):
-    if packet.haslayer(http.HTTPRequest):
-        print(packet)
+    if packet.haslayer(http.HTTPRequest) and packet.haslayer(sc.Raw):
+        print(packet[sc.Raw].load)
+
+
+
+sniff("eth0")
