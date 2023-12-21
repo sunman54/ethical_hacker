@@ -1,3 +1,4 @@
+import optparse
 import scapy.all as sc
 from scapy.layers import http
 from urllib.parse import quote, unquote
@@ -41,4 +42,3 @@ def get_load(packet):
 options = get_arguments()
 interface_name = options.interface
 sniff(interface_name)
-
