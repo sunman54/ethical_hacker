@@ -17,6 +17,12 @@ sudo ptyhon3 app.py -t <192.168.232.1/24>
 
 ## 3 - ARP Spoofer
 
+- A basic implementation of a Man-in-the-Middle (MITM) attack using ARP spoofing. The script aims to intercept traffic between a target machine and a gateway by sending ARP spoofing packets
+- Usage :
+```console 
+sudo ptyhon3 app.py -t <192.168.232.9> -g <192.168.232.1>
+```
+
 ## 4- Packet Sniffer 
 
 - test page : http://vbsca.ca/login/login.asp
