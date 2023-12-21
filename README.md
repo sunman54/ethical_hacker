@@ -25,6 +25,13 @@ sudo ptyhon3 app.py -t <192.168.232.9> -g <192.168.232.1>
 
 ## 4- Packet Sniffer 
 
+- An App that uses Scapy to sniff HTTP traffic on a specified network interface (interface_name). It captures packets and processes them to extract and print information about HTTP requests
+
+- Usage :
+  ```console
+  sudo ptyhon3 app.py -i eth0
+  ```
+
 - test page : http://vbsca.ca/login/login.asp
 - alternative page : http://testphp.vulnweb.com/login.php
 
