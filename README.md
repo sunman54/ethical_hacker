@@ -35,3 +35,12 @@ sudo ptyhon3 app.py -t <192.168.232.9> -g <192.168.232.1>
 - test page : http://vbsca.ca/login/login.asp
 - alternative page : http://testphp.vulnweb.com/login.php
 
+
+
+## 5- File Interceptor
+- This Python script uses Scapy and NetfilterQueue to intercept and modify HTTP traffic. It identifies packets with '.exe' in the payload, stores their TCP acknowledgment numbers, and replaces requested files with a specified URL. The code relies on iptables rules to redirect traffic to NetfilterQueue for processing.
+
+- Usage :
+  ```console
+  sudo ptyhon3 app.py 
+  ```
