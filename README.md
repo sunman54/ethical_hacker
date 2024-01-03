@@ -44,3 +44,14 @@ sudo ptyhon3 app.py -t <192.168.232.9> -g <192.168.232.1>
   ```console
   sudo ptyhon3 app.py 
   ```
+
+
+## 6- ARP Spoof Detector
+
+- This Python script uses the Scapy library to monitor network traffic on the 'eth0' interface. It identifies potential ARP spoofing attacks by comparing the MAC address in ARP reply packets with the real MAC address associated with the source IP address and prints a warning message if they don't match.
+
+
+- Usage :
+  ```console
+  sudo ptyhon3 app.py 
+  ```
