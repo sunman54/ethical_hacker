@@ -16,12 +16,16 @@ def sniff(interface):
 
 def process_sniffed_packet(packet):
     if packet.haslayer(scapy.ARP) and packet[scapy.ARP].op == 2:
-        real_mac = get_mac(packet[scapy.ARP].psrc)
-        response_mac = packet[scapy.ARP].hwsrc
+            
+        try:    
+            real_mac = get_mac(packet[scapy.ARP].psrc)
+            response_mac = packet[scapy.ARP].hwsrc
 
-        if real_mac != response_mac:
-            print('[x] You are UNDER ATTACK !!!')
-
+            if real_mac != response_mac:
+                print('[x] You are UNDER ATTACK !!!')
+                
+        except IndexError:
+            pass
     
 
 sniff('eth0')
