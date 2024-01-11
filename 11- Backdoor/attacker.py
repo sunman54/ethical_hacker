@@ -21,9 +21,13 @@ class Listener:
         json_data = ''
         while True:
             try:
-                json_data += self.connection.recv(1024).decode('utf-8')
+                received_data = self.connection.recv(1024).decode('utf-8')
+                if not received_data:
+                    break
+                json_data += received_data
             except ValueError:
                 continue 
+        return json_data
 
     def execute_system_command(self, command):
         self.send(command)
