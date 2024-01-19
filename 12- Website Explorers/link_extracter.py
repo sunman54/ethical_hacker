@@ -1,3 +1,4 @@
+from urllib.parse import urljoin
 import requests
 import re
 
@@ -14,4 +15,5 @@ target_url = 'https://google.com'
 href_links = extract_links_from(target_url)
 
 for link in href_links:
+    link = urljoin(target_url, link)
     print(link)
