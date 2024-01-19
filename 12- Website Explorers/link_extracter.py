@@ -13,14 +13,17 @@ def extract_links_from(url):
 target_url = 'https://google.com'
 target_url_list = []
 
-href_links = extract_links_from(target_url)
 
-for link in href_links:
-    link = urljoin(target_url, link)
+def crawl(url):
+    href_links = extract_links_from(url)
 
-    if '#' in link: #prevent inner link in page
-        link = link.split('#')[0]
+    for link in href_links:
+        link = urljoin(url, link)
 
-    if target_url in link and link not in target_url_list: #for avoiding other websites and repeat same links
-        target_url_list.append(link)
-        print(link)
+        if '#' in link: #prevent inner link in page
+            link = link.split('#')[0]
+
+        if target_url in link and link not in target_url_list: #for avoiding other websites and repeat same links
+            target_url_list.append(link)
+            print(link)
+            crawl(link)
