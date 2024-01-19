@@ -16,4 +16,6 @@ href_links = extract_links_from(target_url)
 
 for link in href_links:
     link = urljoin(target_url, link)
-    print(link)
+
+    if target_url in link: #for avoiding other websites
+        print(link)
