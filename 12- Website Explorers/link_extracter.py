@@ -11,11 +11,16 @@ def extract_links_from(url):
         return []
 
 target_url = 'https://google.com'
+target_url_list = []
 
 href_links = extract_links_from(target_url)
 
 for link in href_links:
     link = urljoin(target_url, link)
 
-    if target_url in link: #for avoiding other websites
+    if '#' in link: #prevent inner link in page
+        link = link.split('#')[0]
+
+    if target_url in link and link not in target_url_list: #for avoiding other websites and repeat same links
+        target_url_list.append(link)
         print(link)
